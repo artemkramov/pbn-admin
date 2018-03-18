@@ -2,6 +2,7 @@
 
 namespace common\components;
 
+use backend\models\Website;
 use Yii;
 use yii\web\Request;
 use common\models\Lang;
@@ -18,6 +19,11 @@ class LangRequest extends Request
      * @var string
      */
     private $_langUrl;
+
+    /**
+     * @var int
+     */
+    public $websiteID;
 
     /**
      * @return string
@@ -40,9 +46,44 @@ class LangRequest extends Request
             }
         }
 
-
+        $this->resolveDatabaseConnection();
 
         return $this->_langUrl;
+    }
+
+    /**
+     * Try to detect the client website and database
+     * for current request
+     * @param $websiteID
+     */
+    public function resolveDatabaseConnection($websiteID = null)
+    {
+        /**
+         * Search appropriate GET parameter
+         */
+        if (!isset($websiteID)) {
+            $websiteID = Yii::$app->request->get('websiteID', null);
+        }
+        if (isset($websiteID)) {
+            /**
+             * @var Website $website
+             */
+            $website = Website::findOne($websiteID);
+            if (isset($website)) {
+                $this->websiteID = $websiteID;
+
+                /**
+                 * Check if the connection is remote
+                 * than rewrite the database connection
+                 */
+                if ($website->isRemoteConnection) {
+                    Yii::$app->db2->close();
+                    Yii::$app->db2->dsn = $website->dsn;
+                    Yii::$app->db2->username = $website->username;
+                    Yii::$app->db2->password = $website->password;
+                }
+            }
+        }
     }
 
     /**

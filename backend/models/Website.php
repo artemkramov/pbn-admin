@@ -2,6 +2,7 @@
 
 namespace backend\models;
 
+use common\models\Bean;
 use Yii;
 
 /**
@@ -14,7 +15,7 @@ use Yii;
  * @property string $password
  * @property integer $isRemoteConnection
  */
-class Website extends \yii\db\ActiveRecord
+class Website extends Bean
 {
     /**
      * @inheritdoc
@@ -43,12 +44,25 @@ class Website extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'url' => 'Url',
-            'dsn' => 'Dsn',
-            'username' => 'Username',
-            'password' => 'Password',
-            'isRemoteConnection' => 'Is Remote Connection',
+            'id'                 => 'ID',
+            'url'                => 'URL',
+            'dsn'                => 'DSN',
+            'username'           => 'Username',
+            'password'           => 'Password',
+            'isRemoteConnection' => 'Is remote connection',
+        ];
+    }
+
+    /**
+     * Method for getting the name of the bean
+     * Is called for breadcrumb generation
+     * @return array
+     */
+    public static function getLabels()
+    {
+        return [
+            'singular' => 'Website',
+            'multiple' => 'Websites'
         ];
     }
 }

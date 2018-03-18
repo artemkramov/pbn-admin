@@ -76,21 +76,36 @@ class SiteHelper extends \yii\base\Component
         return [
             'view'   => function ($url, $model) {
                 $icon = "eye-open";
-                $url = Url::to([AccessHelper::formPrimaryUrl('view'), 'id' => $model->id]);
+                $websiteID = \Yii::$app->request->websiteID;
+                $parameters = [AccessHelper::formPrimaryUrl('view'), 'id' => $model->id];
+                if (isset($websiteID)) {
+                    $parameters['websiteID'] = $websiteID;
+                }
+                $url = Url::to($parameters);
                 return Html::a('<span class="glyphicon glyphicon-' . $icon . '"></span> ', $url, [
                     'title' => \Yii::t('yii', 'View')
                 ]);
             },
             'update' => function ($url, $model) {
                 $icon = "pencil";
-                $url = Url::to([AccessHelper::formPrimaryUrl('update'), 'id' => $model->id]);
+                $websiteID = \Yii::$app->request->websiteID;
+                $parameters = [AccessHelper::formPrimaryUrl('update'), 'id' => $model->id];
+                if (isset($websiteID)) {
+                    $parameters['websiteID'] = $websiteID;
+                }
+                $url = Url::to($parameters);
                 return Html::a('<span class="glyphicon glyphicon-' . $icon . '"></span> ', $url, [
                     'title' => \Yii::t('yii', 'Update')
                 ]);
             },
             'delete' => function ($url, $model) {
                 $icon = "trash";
-                $url = Url::to([AccessHelper::formPrimaryUrl('delete'), 'id' => $model->id]);
+                $websiteID = \Yii::$app->request->websiteID;
+                $parameters = [AccessHelper::formPrimaryUrl('delete'), 'id' => $model->id];
+                if (isset($websiteID)) {
+                    $parameters['websiteID'] = $websiteID;
+                }
+                $url = Url::to($parameters);
                 return Html::a('<span class="glyphicon glyphicon-' . $icon . '"></span> ', $url, [
                     'title'        => \Yii::t('yii', 'Delete'),
                     'data-confirm' => \Yii::t('yii', 'Are you sure you want to delete this item?'),
@@ -291,18 +306,25 @@ class SiteHelper extends \yii\base\Component
     {
         $accessHelper = new AccessHelper();
         $menu_items = [
-            ['label' => Module::t('Menu'), 'options' => ['class' => 'header']],
-            ['label' => Module::t('Users'), 'icon' => 'fa fa-users', 'url' => '#',
+            ['label' => 'Menu', 'options' => ['class' => 'header']],
+            ['label' => 'Content', 'icon' => 'fa fa-list', 'url' => '#',
              'items' => [
-                 ['label' => Module::t('Users'), 'icon' => 'fa fa-user', 'url' => ['/users/users/index']],
-                 ['label' => Module::t('Permissions'), 'icon' => 'fa fa-circle', 'url' => ['/permit/access/permission']],
-                 ['label' => Module::t('Roles'), 'icon' => 'fa fa-circle', 'url' => ['/permit/access/role']],
+                 ['label' => 'Templates', 'url' => ['/content/templates/index'], 'icon' => 'fa fa-columns'],
+                 ['label' => 'Routes', 'url' => ['/content/routes/index'], 'icon' => 'fa fa-circle'],
+                 ['label' => 'Pagination', 'url' => ['/content/paginations/index'], 'icon' => 'fa fa-circle']
              ]
             ],
-            ['label' => Module::t('Login'), 'url' => ['site/login'], 'visible' => \Yii::$app->user->isGuest],
-            ['label' => Module::t('Settings'), 'icon' => 'fa fa-cog', 'url' => '#',
+            ['label' => 'Users', 'icon' => 'fa fa-users', 'url' => '#',
              'items' => [
-                 ['label' => Module::t('Translations'), 'url' => ['/i18n'], 'icon' => 'fa fa-book']
+                 ['label' => 'Users', 'icon' => 'fa fa-user', 'url' => ['/users/users/index']],
+                 ['label' => 'Permissions', 'icon' => 'fa fa-circle', 'url' => ['/permit/access/permission']],
+                 ['label' => 'Roles', 'icon' => 'fa fa-circle', 'url' => ['/permit/access/role']],
+             ]
+            ],
+            ['label' => 'Login', 'url' => ['site/login'], 'visible' => \Yii::$app->user->isGuest],
+            ['label' => 'Settings', 'icon' => 'fa fa-cog', 'url' => '#',
+             'items' => [
+                 ['label' => 'Websites', 'url' => ['/settings/websites/index'], 'icon' => 'fa fa-globe']
              ]
             ],
         ];
@@ -341,6 +363,19 @@ class SiteHelper extends \yii\base\Component
             }
         }
         return $menuItems;
+    }
+
+    /**
+     * @param $url
+     * @return mixed
+     */
+    public static function formUrlForWebsite($url)
+    {
+        $websiteID = \Yii::$app->request->websiteID;
+        if (isset($websiteID)) {
+            $url['websiteID'] = $websiteID;
+        }
+        return $url;
     }
 
     /**

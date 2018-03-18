@@ -6,19 +6,23 @@ use \backend\components\SiteHelper;
 use \backend\components\AccessHelper;
 
 /** @var $model \common\models\Bean */
+/**
+ * @var int $websiteID
+ */
+
 ?>
 <p>
     <?
     if (SiteHelper::checkActionPermission(['update'])) {
         echo Html::a(Module::t('Update'),
-            \yii\helpers\Url::to([AccessHelper::formPrimaryUrl('update'), 'id' => $model->id]),
+            \yii\helpers\Url::to(SiteHelper::formUrlForWebsite([AccessHelper::formPrimaryUrl('update'), 'id' => $model->id])),
             ['class' => 'btn btn-primary']);
     }
     ?>
     <?
     if (SiteHelper::checkActionPermission(['delete'])) {
         echo Html::a(Module::t('Delete'),
-            \yii\helpers\Url::to([AccessHelper::formPrimaryUrl('delete'), 'id' => $model->id]), [
+            \yii\helpers\Url::to(SiteHelper::formUrlForWebsite([AccessHelper::formPrimaryUrl('delete'), 'id' => $model->id])), [
                 'class' => 'btn btn-danger',
                 'data'  => [
                     'confirm' => Module::t('Are you sure you want to delete this item?'),
@@ -57,7 +61,7 @@ use \backend\components\AccessHelper;
 
     <?
     if (SiteHelper::checkActionPermission(['index'])) {
-        echo Html::a(Module::t('Back to list'), AccessHelper::formPrimaryUrl('index'), ['class' => 'btn btn-default']);
+        echo Html::a(Module::t('Back to list'), SiteHelper::formUrlForWebsite([AccessHelper::formPrimaryUrl('index')]), ['class' => 'btn btn-default']);
     }
     ?>
 </p>

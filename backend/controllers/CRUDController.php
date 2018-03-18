@@ -9,6 +9,9 @@
 namespace backend\controllers;
 
 use backend\components\AccessHelper;
+use backend\components\SiteHelper;
+use common\components\LangRequest;
+use common\models\Bean;
 use common\models\User;
 use common\modules\i18n\Module;
 use yii\filters\VerbFilter;
@@ -124,11 +127,28 @@ class CRUDController extends AuthController
      */
     public function actionCreate($extraParams = [])
     {
+        /**
+         * @var Bean $model
+         */
         $className = $this->beanClass;
         $model = new $className();
 
-        if ($model->load(\Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect([AccessHelper::formPrimaryUrl('view'), 'id' => $model->id]);
+        if ($model->load(\Yii::$app->request->post())) {
+            /**
+             * Switch to the chosen database configuration
+             * @var LangRequest $request
+             */
+            $request = \Yii::$app->request;
+            if (array_key_exists('websiteID', $model->attributes)) {
+                $request->resolveDatabaseConnection($model->websiteID);
+            }
+            if ($model->save()) {
+                $redirectParameters = [AccessHelper::formPrimaryUrl('view'), 'id' => $model->id];
+                if (array_key_exists('websiteID', $model->attributes)) {
+                    $redirectParameters['websiteID'] = $model->websiteID;
+                }
+                return $this->redirect($redirectParameters);
+            }
         } else {
             if (!empty($model->errors)) {
                 $error = [];
@@ -217,8 +237,10 @@ class CRUDController extends AuthController
         }
         $model = $this->getModel($id);
 
+        $redirectParameters = [AccessHelper::formPrimaryUrl('view'), 'id' => $model->id];
+
         if ($model->load(\Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect([AccessHelper::formPrimaryUrl('view'), 'id' => $model->id]);
+            return $this->redirect(SiteHelper::formUrlForWebsite($redirectParameters));
         } else {
             if (!empty($model->errors)) {
                 $error = [];

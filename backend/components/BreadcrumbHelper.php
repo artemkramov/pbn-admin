@@ -96,10 +96,10 @@ class BreadcrumbHelper
         }
         $viewData->title .= $subTitle;
         if (SiteHelper::checkActionPermission(['index'])) {
-            $viewData->params['breadcrumbs'][] = ['label' => Module::t($extraData['multiple']), 'url' => ['index']];
+            $viewData->params['breadcrumbs'][] = ['label' => Module::t($extraData['multiple']), 'url' => SiteHelper::formUrlForWebsite(['index'])];
         }
         if (SiteHelper::checkActionPermission(['view'])) {
-            $viewData->params['breadcrumbs'][] = ['label' => $subTitle, 'url' => ['view', 'id' => $model->id]];
+            $viewData->params['breadcrumbs'][] = ['label' => $subTitle, 'url' => SiteHelper::formUrlForWebsite(['view', 'id' => $model->id])];
         }
         $viewData->params['breadcrumbs'][] = Module::t('Update');
     }
@@ -135,7 +135,7 @@ class BreadcrumbHelper
         }
         $viewData->title = $title;
         if (SiteHelper::checkActionPermission(['index'])) {
-            $viewData->params['breadcrumbs'][] = ['label' => Module::t($extraData['multiple']), 'url' => ['index']];
+            $viewData->params['breadcrumbs'][] = ['label' => Module::t($extraData['multiple']), 'url' => SiteHelper::formUrlForWebsite(['index'])];
         }
 
         $viewData->params['breadcrumbs'][] = $title;

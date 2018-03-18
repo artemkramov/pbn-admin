@@ -56,7 +56,7 @@ return [
             'class' => 'backend\modules\settings\Module',
         ],
         'content'   => [
-            'class' => 'common\modules\content\Module',
+            'class' => 'backend\modules\content\Module',
         ]
 
     ],

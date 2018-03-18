@@ -21,7 +21,7 @@ use Yii;
 class AccessController extends CRUDController
 {
 
-    const TABLE_AUTH_ITEM = 'auth_item';
+    const TABLE_AUTH_ITEM = '{{%auth-item}}';
 
     const TYPE_PERMISSION = 2;
 
