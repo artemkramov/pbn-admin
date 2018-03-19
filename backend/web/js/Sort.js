@@ -14,7 +14,7 @@ var Sort = (function () {
      * Url for async data uploading
      * @type {string}
      */
-    var urlLoadMenuItems = 'admin/ajax/load-menu-items';
+    var urlLoadMenuItems = 'ajax/load-menu-items';
 
     /**
      * Hidden input with the url for getting of the items
@@ -56,17 +56,18 @@ var Sort = (function () {
          */
         loadData: function () {
             var urlLoadItems = urlLoadMenuItems;
+            var url = window.siteUrl + urlLoadItems;
             if ($(inputUrlItems).length) {
-                urlLoadItems = $(inputUrlItems).val();
+                url = $(inputUrlItems).val();
             }
             App.sendAjax({
-                url: site_url + urlLoadItems,
+                url: url,
                 success: function (data) {
                     App.hideAjaxloader();
                     $(container).tree({
                         data: data,
                         dragAndDrop: true,
-                        autoOpen: true,
+                        autoOpen: true
                     });
                 }
             }, true);

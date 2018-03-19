@@ -14,9 +14,6 @@
 
 namespace backend\components;
 
-use backend\models\Customer;
-use backend\models\Employee;
-use backend\models\Project;
 use common\models\Bean;
 use common\models\Lang;
 use common\models\User;
@@ -76,42 +73,34 @@ class SiteHelper extends \yii\base\Component
         return [
             'view'   => function ($url, $model) {
                 $icon = "eye-open";
-                $websiteID = \Yii::$app->request->websiteID;
-                $parameters = [AccessHelper::formPrimaryUrl('view'), 'id' => $model->id];
-                if (isset($websiteID)) {
-                    $parameters['websiteID'] = $websiteID;
-                }
-                $url = Url::to($parameters);
+                $url = Url::to(self::formUrlForWebsite([AccessHelper::formPrimaryUrl('view'), 'id' => $model->id]));
                 return Html::a('<span class="glyphicon glyphicon-' . $icon . '"></span> ', $url, [
                     'title' => \Yii::t('yii', 'View')
                 ]);
             },
             'update' => function ($url, $model) {
                 $icon = "pencil";
-                $websiteID = \Yii::$app->request->websiteID;
-                $parameters = [AccessHelper::formPrimaryUrl('update'), 'id' => $model->id];
-                if (isset($websiteID)) {
-                    $parameters['websiteID'] = $websiteID;
-                }
-                $url = Url::to($parameters);
+                $url = Url::to(self::formUrlForWebsite([AccessHelper::formPrimaryUrl('update'), 'id' => $model->id]));
                 return Html::a('<span class="glyphicon glyphicon-' . $icon . '"></span> ', $url, [
                     'title' => \Yii::t('yii', 'Update')
                 ]);
             },
             'delete' => function ($url, $model) {
                 $icon = "trash";
-                $websiteID = \Yii::$app->request->websiteID;
-                $parameters = [AccessHelper::formPrimaryUrl('delete'), 'id' => $model->id];
-                if (isset($websiteID)) {
-                    $parameters['websiteID'] = $websiteID;
-                }
-                $url = Url::to($parameters);
+                $url = Url::to(self::formUrlForWebsite([AccessHelper::formPrimaryUrl('delete'), 'id' => $model->id]));
                 return Html::a('<span class="glyphicon glyphicon-' . $icon . '"></span> ', $url, [
                     'title'        => \Yii::t('yii', 'Delete'),
                     'data-confirm' => \Yii::t('yii', 'Are you sure you want to delete this item?'),
                     'data-method'  => 'post',
                     'data-pjax'    => 0,
                     'aria-label'   => \Yii::t('yii', 'Delete'),
+                ]);
+            },
+            'sort'   => function ($url, $model) {
+                $icon = "sort";
+                $url = Url::to(self::formUrlForWebsite([AccessHelper::formPrimaryUrl('sort'), 'id' => $model->id]));
+                return Html::a('<span class="glyphicon glyphicon-' . $icon . '"></span> ', $url, [
+                    'title' => 'Sort'
                 ]);
             },
         ];
@@ -268,7 +257,7 @@ class SiteHelper extends \yii\base\Component
             if (!is_array($item)) {
                 $item = (array)$item;
             }
-            if ($item['parent_id'] == $parentID) {
+            if ($item['parentID'] == $parentID) {
                 $children = self::buildTreeArray($items, $property, $item[$property]);
                 if ($children) {
                     $item['children'] = $children;
@@ -311,7 +300,12 @@ class SiteHelper extends \yii\base\Component
              'items' => [
                  ['label' => 'Templates', 'url' => ['/content/templates/index'], 'icon' => 'fa fa-columns'],
                  ['label' => 'Routes', 'url' => ['/content/routes/index'], 'icon' => 'fa fa-circle'],
-                 ['label' => 'Pagination', 'url' => ['/content/paginations/index'], 'icon' => 'fa fa-circle']
+                 ['label' => 'Pagination', 'url' => ['/content/paginations/index'], 'icon' => 'fa fa-circle'],
+                 ['label' => 'Page types', 'url' => ['/content/page-types/index'], 'icon' => 'fa fa-circle'],
+                 ['label' => 'Menu types', 'url' => ['/content/menu-types/index'], 'icon' => 'fa fa-circle'],
+                 ['label' => 'Menu', 'url' => ['/content/menus/index'], 'icon' => 'fa fa-circle'],
+                 ['label' => 'Posts', 'url' => ['/content/pages/index', 'type' => 'post'], 'icon' => 'fa fa-circle'],
+                 ['label' => 'Pages', 'url' => ['/content/pages/index', 'type' => 'page'], 'icon' => 'fa fa-circle']
              ]
             ],
             ['label' => 'Users', 'icon' => 'fa fa-users', 'url' => '#',
@@ -374,6 +368,10 @@ class SiteHelper extends \yii\base\Component
         $websiteID = \Yii::$app->request->websiteID;
         if (isset($websiteID)) {
             $url['websiteID'] = $websiteID;
+        }
+        $type = \Yii::$app->request->get('type', null);
+        if (isset($type)) {
+            $url['type'] = $type;
         }
         return $url;
     }

@@ -22,15 +22,16 @@ BreadcrumbHelper::set($this, \yii\helpers\ArrayHelper::merge($labels, [
         'action' => ['routes/index']
     ]); ?>
 
-    <p>
-        <?= \backend\widgets\FormButtons::widget([
-            'model'      => false,
-            'type'       => 'create',
-            'modelLabel' => $labels['singular']
-        ]); ?>
-    </p>
-
     <? if (isset($dataProvider)): ?>
+
+        <p>
+            <?= \backend\widgets\FormButtons::widget([
+                'model'      => false,
+                'type'       => 'create',
+                'modelLabel' => $labels['singular']
+            ]); ?>
+        </p>
+
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'filterModel'  => $searchModel,

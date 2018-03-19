@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Template */
+/* @var $model backend\models\PageType */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="template-form">
+<div class="page-type-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -23,8 +23,9 @@ use yii\widgets\ActiveForm;
 
     <div class="row">
         <div class="col-sm-6">
-            <?= $form->field($model, 'type')->dropDownList(\backend\models\Template::listType()) ?>
+            <?= $form->field($model, 'routeID')->dropDownList(\backend\models\Route::listAll('id', 'name')) ?>
         </div>
+
     </div>
 
     <?= \backend\widgets\FormButtons::widget([

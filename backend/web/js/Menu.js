@@ -8,19 +8,19 @@ var Menu = (function () {
      * Menu types select
      * @type {string}
      */
-    var selectMenuType = '#menu-menu_type_id';
+    var selectMenuType = '#menu-menutypeid';
 
     /**
      * Menu items select
      * @type {string}
      */
-    var selectMenu = '#menu-parent_id';
+    var selectMenu = '#menu-parentid';
 
     /**
      * Url for loading of menu items
      * @type {string}
      */
-    var urlLoadMenu = '/admin/ajax/load-menu-dropdown';
+    var urlLoadMenu = '/ajax/load-menu-dropdown';
 
     return {
         /**
@@ -55,7 +55,8 @@ var Menu = (function () {
             App.sendAjax({
                 url: urlLoadMenu,
                 data: {
-                    menuTypeID : menuTypeID
+                    menuTypeID: menuTypeID,
+                    websiteID: window.websiteID
                 },
                 success: function (items) {
                     App.hideAjaxloader();

@@ -33,7 +33,7 @@ var Job = (function() {
 //                    $(template_data).removeClass('job-template');
 //                    $(table_jobs).find("tbody").append($("<div />").append(template_data).html());
                     $.ajax({
-                       url: site_url+"/ajax/load-job-line",
+                       url: siteUrl+"/ajax/load-job-line",
                        beforeSend: function() {
                            
                        },
@@ -100,7 +100,7 @@ var Job = (function() {
                         employee_id = employeeAttr;
                     }
                     $.ajax({
-                        url: site_url+"/ajax/load-project-date-tasks",
+                        url: siteUrl+"/ajax/load-project-date-tasks",
                         type: 'get',
                         data: {
                             project_id: project_id,
@@ -132,7 +132,7 @@ var Job = (function() {
                     var end_date = $("#end-date").val();
                     var employee_id = $("#employee-id").val();
                     $.ajax({
-                        url: site_url + "/ajax/get-hours-per-period",
+                        url: siteUrl + "/ajax/get-hours-per-period",
                         type: 'get',
                         data: {
                             project_id: project_id,

@@ -3,15 +3,8 @@ namespace backend\controllers;
 
 use backend\components\MultipleBeanHelper;
 use backend\components\SiteHelper;
-use backend\models\Category;
-use backend\models\Characteristic;
-use backend\models\Product;
-use backend\models\SocialLink;
-use backend\models\Stock;
 use common\models\Lang;
-use common\models\Menu;
-use common\models\SaleProduct;
-use common\models\StockCity;
+use backend\models\Menu;
 use yii\filters\ContentNegotiator;
 use yii\filters\VerbFilter;
 use yii\base\ViewContextInterface;

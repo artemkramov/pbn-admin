@@ -27,12 +27,6 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'priority')->textInput() ?>
         </div>
 
-        <? if ($model->isNewRecord): ?>
-            <div class="col-sm-6">
-                <?= $form->field($model, 'websiteID')->dropDownList(\backend\models\Website::listAll('id', 'url')) ?>
-            </div>
-        <? endif; ?>
-
     </div>
 
 

@@ -239,8 +239,8 @@ class MultilingualBehavior extends Behavior
             $namespace = substr($this->langClassName, 0, strrpos($this->langClassName, '\\'));
             eval('
             namespace ' . $namespace . ';
-            use yii\db\ActiveRecord;
-            class ' . $this->langClassShortName . ' extends ActiveRecord
+            use common\models\BeanWebsite;
+            class ' . $this->langClassShortName . ' extends BeanWebsite
             {
                 public static function tableName()
                 {

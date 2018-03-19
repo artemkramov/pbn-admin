@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 use backend\components\AccessHelper;
+use backend\components\SiteHelper;
 use backend\models\search\IContentSearch;
 use common\models\Bean;
 use common\models\BeanWebsite;
@@ -87,7 +88,7 @@ class CRUDWebsiteController extends CRUDController
         $model->setScenario(BeanWebsite::SCENARIO_DELETE);
         $model->isDeleted = BeanWebsite::STATUS_DELETED;
         $model->save();
-        return $this->redirect(Url::to([AccessHelper::formPrimaryUrl('index'), 'websiteID' => \Yii::$app->request->websiteID]));
+        return $this->redirect(Url::to(SiteHelper::formUrlForWebsite([AccessHelper::formPrimaryUrl('index')])));
     }
 
 }

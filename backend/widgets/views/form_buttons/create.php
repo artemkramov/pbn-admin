@@ -10,5 +10,5 @@ $icon = \yii\helpers\Html::tag('span', '', ['class' => 'fa fa-plus']);
 
 if (SiteHelper::checkActionPermission(['create'])) {
     echo \yii\helpers\Html::a(sprintf("%s %s %s", $icon, Module::t('Create '), $modelLabel),
-        \backend\components\AccessHelper::formPrimaryUrl('create'), ['class' => 'btn btn-success']);
+        SiteHelper::formUrlForWebsite([\backend\components\AccessHelper::formPrimaryUrl('create')]), ['class' => 'btn btn-success']);
 }

@@ -133,6 +133,10 @@ class CRUDController extends AuthController
         $className = $this->beanClass;
         $model = new $className();
 
+        if (array_key_exists('websiteID', $model->attributes)) {
+            $model->websiteID = \Yii::$app->request->websiteID;
+        }
+
         if ($model->load(\Yii::$app->request->post())) {
             /**
              * Switch to the chosen database configuration
@@ -147,7 +151,7 @@ class CRUDController extends AuthController
                 if (array_key_exists('websiteID', $model->attributes)) {
                     $redirectParameters['websiteID'] = $model->websiteID;
                 }
-                return $this->redirect($redirectParameters);
+                return $this->redirect(SiteHelper::formUrlForWebsite($redirectParameters));
             }
         } else {
             if (!empty($model->errors)) {

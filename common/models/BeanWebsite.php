@@ -35,4 +35,28 @@ class BeanWebsite extends Bean
         return $scenarios;
     }
 
+    /**
+     * Method for forming of dropdown list to the form
+     * @param string $keyField
+     * @param string $valueField
+     * @param bool $asArray
+     * @return mixed
+     */
+    public static function listAll($keyField = 'id', $valueField = 'name', $asArray = true)
+    {
+        $query = static::find()->where([
+            'isDeleted' => self::STATUS_NOT_DELETED,
+        ]);
+        $websiteID = \Yii::$app->request->websiteID;
+        if (isset($websiteID)) {
+            $query->andWhere([
+                'websiteID' => $websiteID
+            ]);
+        }
+        if ($asArray) {
+            $query->select([$keyField, $valueField])->asArray();
+        }
+        return ArrayHelper::map($query->all(), $keyField, $valueField);
+    }
+
 }

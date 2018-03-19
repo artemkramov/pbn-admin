@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 18, 2018 at 03:39 PM
+-- Generation Time: Mar 19, 2018 at 12:27 PM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.5.38
 
@@ -170,13 +170,14 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`id`, `dateCreated`, `dateModified`, `sort`, `parentID`, `pageID`, `image`, `url`, `menuTypeID`, `isEnabled`, `isDirect`, `isNewTab`, `isDeleted`, `websiteID`) VALUES
-(1, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, NULL, 1, NULL, NULL, 1, 1, 0, 0, 0, 1),
-(2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, NULL, 2, NULL, NULL, 1, 1, 0, 0, 0, 1),
+(1, '0000-00-00 00:00:00', '2018-03-19 09:34:23', 0, NULL, 1, NULL, NULL, 3, 1, 0, 0, 0, 3),
+(2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, NULL, 2, NULL, NULL, 3, 1, 0, 0, 0, 3),
 (3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2, NULL, 3, NULL, NULL, 1, 1, 0, 0, 0, 1),
 (4, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 2, 4, NULL, NULL, 1, 1, 0, 0, 0, 1),
 (5, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 4, 5, NULL, NULL, 1, 1, 0, 0, 0, 1),
 (6, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, NULL, 2, NULL, NULL, 2, 1, 0, 0, 0, 1),
-(7, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, NULL, NULL, NULL, '/user', 2, 1, 1, 0, 0, 1);
+(7, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, NULL, NULL, NULL, '/user', 2, 1, 1, 0, 0, 1),
+(8, '2018-03-19 09:34:54', '2018-03-19 09:34:54', 2, NULL, 1, NULL, NULL, 3, 1, 0, 0, 0, 3);
 
 -- --------------------------------------------------------
 
@@ -202,7 +203,8 @@ INSERT INTO `menu-language` (`id`, `menuID`, `language`, `title`) VALUES
 (4, 4, 'en', 'Submenu'),
 (5, 6, 'en', 'Follow us'),
 (6, 5, 'en', 'Subsubmenu'),
-(7, 7, 'en', 'Login/Register');
+(7, 7, 'en', 'Login/Register'),
+(14, 8, 'en', 'Contacts');
 
 -- --------------------------------------------------------
 
@@ -224,7 +226,8 @@ CREATE TABLE `menu-type` (
 
 INSERT INTO `menu-type` (`id`, `alias`, `name`, `isDeleted`, `websiteID`) VALUES
 (1, 'header', 'Header menu', 0, 1),
-(2, 'footer', 'Footer menu', 0, 1);
+(2, 'footer', 'Footer menu', 0, 1),
+(3, 'header', 'Header menu', 0, 3);
 
 -- --------------------------------------------------------
 
@@ -676,7 +679,7 @@ CREATE TABLE `page` (
 --
 
 INSERT INTO `page` (`id`, `image1`, `image2`, `image3`, `datePublished`, `dateCreated`, `dateModified`, `sort`, `authorID`, `seoPriority`, `pageTypeID`, `ratingValue`, `ratingCount`, `isPaginationOn`, `paginationID`, `paginationPerPage`, `templateCarcassID`, `templateInnerID`, `isVisibleSitemapXml`, `isVisibleSitemapHtml`, `isMainPage`, `isEnabled`, `isDeleted`, `websiteID`) VALUES
-(1, NULL, NULL, NULL, '2018-03-15', '0000-00-00 00:00:00', '2018-03-14 22:00:00', 0, NULL, '1.0000', NULL, NULL, NULL, 1, 2, 1, 1, 2, 1, 1, 1, 1, 0, 1),
+(1, NULL, NULL, NULL, '2018-03-15', '0000-00-00 00:00:00', '2018-03-14 22:00:00', 0, NULL, '1.0000', NULL, NULL, NULL, 1, 2, 1, 1, 2, 1, 1, 1, 1, 0, 3),
 (2, NULL, NULL, NULL, '2018-03-14', '0000-00-00 00:00:00', '2018-03-13 22:00:00', 0, NULL, '0.5000', 2, 4, 5, 1, 1, 1, 1, 3, 1, 1, 0, 1, 0, 1),
 (3, NULL, NULL, NULL, '2018-03-15', '0000-00-00 00:00:00', '2018-03-13 22:00:00', 1, NULL, '0.5000', 2, NULL, NULL, 0, NULL, NULL, 1, 3, 1, 1, 0, 1, 0, 1),
 (4, NULL, NULL, NULL, '2018-03-15', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2, NULL, '0.5000', 2, NULL, NULL, 0, NULL, NULL, 1, 3, 1, 1, 0, 1, 0, 1),
@@ -789,6 +792,7 @@ CREATE TABLE `page-type` (
   `id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `alias` varchar(255) NOT NULL,
+  `routeID` int(11) DEFAULT NULL,
   `isDeleted` tinyint(1) NOT NULL DEFAULT '0',
   `websiteID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -797,10 +801,14 @@ CREATE TABLE `page-type` (
 -- Dumping data for table `page-type`
 --
 
-INSERT INTO `page-type` (`id`, `name`, `alias`, `isDeleted`, `websiteID`) VALUES
-(1, 'Page', 'page', 0, 1),
-(2, 'Post', 'post', 0, 1),
-(3, 'Author', 'author', 0, 1);
+INSERT INTO `page-type` (`id`, `name`, `alias`, `routeID`, `isDeleted`, `websiteID`) VALUES
+(1, 'Page', 'page', NULL, 0, 1),
+(2, 'Post', 'post', NULL, 0, 1),
+(3, 'Author', 'author', NULL, 0, 1),
+(4, 'Page', 'page', 1, 0, 3),
+(5, 'Post', 'post', NULL, 0, 3),
+(6, 'Category', 'category', NULL, 0, 3),
+(7, 'Author', 'author', NULL, 0, 3);
 
 -- --------------------------------------------------------
 
@@ -847,7 +855,8 @@ INSERT INTO `route` (`id`, `name`, `link`, `priority`, `isDeleted`, `websiteID`)
 (1, 'Content test', 'content/<:alias>', 1, 0, 3),
 (3, 'Common', '<:alias>', 5, 0, 1),
 (5, 'Route with GET', 'blog/<:alias>', 3, 0, 1),
-(6, 'Common route', '<:alias>', 2, 1, 3);
+(6, 'Common route', '<:alias>', 2, 1, 3),
+(7, 'Rouet', '<:alias>', 7, 1, 3);
 
 -- --------------------------------------------------------
 
@@ -1562,7 +1571,8 @@ ALTER TABLE `page-route`
 --
 ALTER TABLE `page-type`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `websiteID` (`websiteID`);
+  ADD KEY `websiteID` (`websiteID`),
+  ADD KEY `routeID` (`routeID`);
 
 --
 -- Indexes for table `pagination`
@@ -1619,17 +1629,17 @@ ALTER TABLE `lang`
 -- AUTO_INCREMENT for table `menu`
 --
 ALTER TABLE `menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `menu-language`
 --
 ALTER TABLE `menu-language`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `menu-type`
 --
 ALTER TABLE `menu-type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `page`
 --
@@ -1659,7 +1669,7 @@ ALTER TABLE `page-route`
 -- AUTO_INCREMENT for table `page-type`
 --
 ALTER TABLE `page-type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `pagination`
 --
@@ -1669,7 +1679,7 @@ ALTER TABLE `pagination`
 -- AUTO_INCREMENT for table `route`
 --
 ALTER TABLE `route`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `source-message`
 --
@@ -1756,7 +1766,8 @@ ALTER TABLE `page-route`
 -- Constraints for table `page-type`
 --
 ALTER TABLE `page-type`
-  ADD CONSTRAINT `page-type_ibfk_1` FOREIGN KEY (`websiteID`) REFERENCES `website` (`id`);
+  ADD CONSTRAINT `page-type_ibfk_1` FOREIGN KEY (`websiteID`) REFERENCES `website` (`id`),
+  ADD CONSTRAINT `page-type_ibfk_2` FOREIGN KEY (`routeID`) REFERENCES `route` (`id`);
 
 --
 -- Constraints for table `pagination`

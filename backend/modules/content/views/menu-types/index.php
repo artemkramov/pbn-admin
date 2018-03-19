@@ -5,21 +5,21 @@ use yii\grid\GridView;
 use backend\components\BreadcrumbHelper;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\search\TemplateSearch */
+/* @var $searchModel backend\models\search\MenuTypeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$labels = \backend\models\Template::getLabels();
+$labels = \backend\models\MenuType::getLabels();
 BreadcrumbHelper::set($this, \yii\helpers\ArrayHelper::merge($labels, [
     'type' => 'index'
 ]));
 ?>
-<div class="template-index">
+<div class="menu-type-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?= \backend\widgets\WebsiteFilter::widget([
-        'action' => ['templates/index']
+        'action' => ['menu-types/index']
     ]); ?>
 
     <? if (isset($dataProvider)): ?>
@@ -40,14 +40,13 @@ BreadcrumbHelper::set($this, \yii\helpers\ArrayHelper::merge($labels, [
 
                 'name',
                 'alias',
-                'type',
 
                 [
                     'class'    => 'yii\grid\ActionColumn',
                     'template' => \backend\components\SiteHelper::getListTemplate([
-                        'view', 'update', 'delete'
+                        'sort', 'view', 'update', 'delete'
                     ]),
-                    'buttons' => \backend\components\SiteHelper::getListButtons()
+                    'buttons'  => \backend\components\SiteHelper::getListButtons()
                 ]
             ],
         ]); ?>

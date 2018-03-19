@@ -43,4 +43,11 @@ class AppAsset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
     ];
+
+    public function init()
+    {
+        $this->publishOptions['forceCopy'] = true;
+        parent::init();
+    }
+
 }

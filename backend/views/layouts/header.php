@@ -75,7 +75,8 @@ $currentLanguage = Lang::getCurrent();
 
 <script>
     var no_image = '<?=  \Yii::getAlias("@web") . "/uploads/images/no-image.png"?>';
-    var site_url = '<?= \Yii::$app->request->hostInfo . "/" . \common\models\Lang::getCurrent()->url . "/"?>';
+    window.siteUrl = '<?= \Yii::$app->request->hostInfo . "/" . \common\models\Lang::getCurrent()->url . "/"?>';
+    window.websiteID = '<?= Yii::$app->request->websiteID; ?>';
     var dateFormat = '<?=  yii\helpers\FormatConverter::convertDatePhpToJui(\common\components\TimeDate::getDefaultDateType());?>';
     var lang = '<?= \common\models\Lang::getCurrent()->url?>';
     var current_url = '<?= \yii\helpers\Url::current()?>';

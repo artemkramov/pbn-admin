@@ -31,10 +31,7 @@ class Module extends \yii\base\Module
 
     public static function t($message, $params = [], $language = null)
     {
-        if (!isset($language)) {
-            $language = Lang::getCurrent()->url;
-        }
-        return Yii::t('common/modules/i18n', $message, $params, $language);
+        return $message;
     }
 
     /**
