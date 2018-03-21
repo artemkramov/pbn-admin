@@ -34,6 +34,7 @@ class AppAsset extends AssetBundle
         'js/turn/turn.min.js',
         'js/App.js',
         'js/Role.js',
+        'js/Template.js',
         'js/RelatedBean.js',
         'js/chosen/chosen.jquery.min.js',
         '//cdn.tinymce.com/4/tinymce.min.js',

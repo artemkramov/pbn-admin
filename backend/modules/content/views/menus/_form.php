@@ -32,7 +32,17 @@ $this->registerJsFile(\Yii::$app->homeUrl . "/js/Menu.js", [
 
     <div class="row">
         <div class="col-sm-6">
-            <?= $form->field($model, 'parentID')->dropDownList(Menu::getMenuDropdown($model->id), ['class' => 'form-control']) ?>
+            <?= \backend\widgets\related_bean\RelatedBean::widget([
+                'label'           => 'Page',
+                'controllerPopup' => '/content/pages/popup',
+                'controllerView'  => '/content/pages/view',
+                'inputName'       => 'Menu[pageID]',
+                'labelField'      => 'title',
+                'relatedBean'     => $model->page,
+                'options'         => [
+                    'id' => 'parentID',
+                ]
+            ]) ?>
             <script>
                 window.parentID = '<?= $model->parentID ?>';
             </script>
@@ -44,17 +54,15 @@ $this->registerJsFile(\Yii::$app->homeUrl . "/js/Menu.js", [
 
     <div class="row">
         <div class="col-sm-6">
-            <?= $form->field($model, 'pageID')->dropDownList(Page::listAllLocalized()) ?>
+            <?= $form->field($model, 'isEnabled')->checkbox() ?>
         </div>
         <div class="col-sm-6">
-            <?= $form->field($model, 'isEnabled')->checkbox() ?>
+            <?= $form->field($model, 'menuTypeID')->dropDownList(\backend\models\MenuType::listAll()) ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-sm-6">
-            <?= $form->field($model, 'menuTypeID')->dropDownList(\backend\models\MenuType::listAll()) ?>
-        </div>
+
         <div class="col-sm-6">
             <?= $form->field($model, 'isNewTab')->checkbox() ?>
         </div>

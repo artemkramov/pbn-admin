@@ -110,12 +110,13 @@ class Menu extends BeanWebsite
         return [
             [['dateCreated', 'dateModified'], 'safe'],
             [['sort', 'parentID', 'pageID', 'menuTypeID', 'isEnabled', 'isDirect', 'isNewTab', 'isDeleted', 'websiteID'], 'integer'],
-            [['menuTypeID'], 'required'],
+            [['menuTypeID', 'sort'], 'required'],
             [['image', 'url'], 'string', 'max' => 255],
             [['parentID'], 'exist', 'skipOnError' => true, 'targetClass' => Menu::className(), 'targetAttribute' => ['parentID' => 'id']],
             [['pageID'], 'exist', 'skipOnError' => true, 'targetClass' => Page::className(), 'targetAttribute' => ['pageID' => 'id']],
             [['menuTypeID'], 'exist', 'skipOnError' => true, 'targetClass' => MenuType::className(), 'targetAttribute' => ['menuTypeID' => 'id']],
             [['websiteID'], 'exist', 'skipOnError' => true, 'targetClass' => Website::className(), 'targetAttribute' => ['websiteID' => 'id']],
+            [['isCustomUrl'], 'safe'],
             [$safe, 'safe']
         ];
     }

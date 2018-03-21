@@ -4,6 +4,7 @@ namespace backend\models;
 
 use common\models\BeanWebsite;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "template".
@@ -86,4 +87,20 @@ class Template extends BeanWebsite
             'carcass' => 'carcass'
         ];
     }
+
+    /**
+     * @param $type
+     * @return array
+     */
+    public static function listItems($type)
+    {
+        return ArrayHelper::map(self::find()
+            ->where([
+                'type'      => $type,
+                'isDeleted' => self::STATUS_NOT_DELETED,
+                'websiteID' => Yii::$app->request->websiteID
+            ])
+            ->all(), 'id', 'name');
+    }
+
 }

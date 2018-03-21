@@ -7,7 +7,8 @@ use backend\components\BreadcrumbHelper;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Page */
 
-BreadcrumbHelper::set($this, \yii\helpers\ArrayHelper::merge(\backend\models\Page::getLabels(), [
+$type = Yii::$app->request->get('type', null);
+BreadcrumbHelper::set($this, \yii\helpers\ArrayHelper::merge(\backend\models\Page::getLabels($type), [
     'type' => 'create'
 ]), $model);
 ?>

@@ -11,8 +11,8 @@ use backend\components\BreadcrumbHelper;
  * @var string $type
  */
 
-
-$labels = \backend\models\Page::getLabels();
+$type = Yii::$app->request->get('type', null);
+$labels = \backend\models\Page::getLabels($type);
 BreadcrumbHelper::set($this, \yii\helpers\ArrayHelper::merge($labels, [
     'type' => 'index'
 ]));

@@ -55,7 +55,7 @@ $this->params['breadcrumbs'][] = Module::t('Edit rule');
             <div class="col-sm-6">
                 <div class="form-group">
                     <?= Html::label(Module::t('Parent permission'));  ?>
-                    <?= Html::dropDownList('parent_id', array_key_exists('parent_id', $extraData) ? $extraData['parent_id'] : '', $permissions, ['class' => 'form-control'])?>
+                    <?= Html::dropDownList('parentID', array_key_exists('parentID', $extraData) ? $extraData['parentID'] : '', $permissions, ['class' => 'form-control'])?>
                 </div>
             </div>
         </div>

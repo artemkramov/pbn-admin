@@ -41,11 +41,14 @@ use yii\helpers\ArrayHelper;
  * @property Menu[] $menus
  * @property Page $author
  * @property Page[] $pages
- * @property Page-type $pageType
+ * @property PageType $pageType
  * @property Pagination $pagination
  * @property Template $templateCarcass
  * @property Template $templateInner
  * @property Website $website
+ * @property PagePage $parentItems
+ * @property PageExtraMeta $metaItems
+ * @property PageRoute $routes
  */
 class Page extends BeanWebsite
 {
@@ -91,7 +94,10 @@ class Page extends BeanWebsite
             [['templateCarcassID'], 'exist', 'skipOnError' => true, 'targetClass' => Template::className(), 'targetAttribute' => ['templateCarcassID' => 'id']],
             [['templateInnerID'], 'exist', 'skipOnError' => true, 'targetClass' => Template::className(), 'targetAttribute' => ['templateInnerID' => 'id']],
             [['websiteID'], 'exist', 'skipOnError' => true, 'targetClass' => Website::className(), 'targetAttribute' => ['websiteID' => 'id']],
-            [$safe, 'safe']
+            [$safe, 'safe'],
+            ['parentItems', 'validateRelatedBeans', 'skipOnEmpty' => false, 'skipOnError' => false, 'params' => ['beanRelatedField' => 'pageChildID', 'beanClass' => PagePage::className()]],
+            ['metaItems', 'validateRelatedBeans', 'skipOnEmpty' => false, 'skipOnError' => false, 'params' => ['beanRelatedField' => 'pageID', 'beanClass' => PageExtraMeta::className()]],
+            ['routes', 'validateRelatedBeans', 'skipOnEmpty' => false, 'skipOnError' => false, 'params' => ['beanRelatedField' => 'pageID', 'beanClass' => PageRoute::className()]],
         ];
     }
 
@@ -225,6 +231,111 @@ class Page extends BeanWebsite
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getParentItems()
+    {
+        return $this->hasMany(PagePage::className(), [
+            'pageChildID' => 'id'
+        ]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMetaItems()
+    {
+        return $this->hasMany(PageExtraMeta::className(), [
+            'pageID' => 'id'
+        ]);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRoutes()
+    {
+        return $this->hasMany(PageRoute::className(), [
+            'pageID' => 'id'
+        ]);
+    }
+
+    /**
+     * @param $save
+     * @param array $postData
+     */
+    public function setParentItems($postData, $save = false)
+    {
+        if (!$save) return;
+        PagePage::deleteAll(['pageChildID' => $this->id]);
+        $data = $this->bundleMultipleBean(PagePage::className(), $postData);
+        foreach ($data['items'] as $bean) {
+            /**
+             * @var PagePage $bean
+             */
+            $bean->pageChildID = $this->id;
+            $bean->save();
+        }
+    }
+
+    /**
+     * @param $save
+     * @param array $postData
+     */
+    public function setMetaItems($postData, $save = false)
+    {
+        if (!$save) return;
+        PageExtraMeta::deleteAll(['pageID' => $this->id]);
+        $data = $this->bundleMultipleBean(PageExtraMeta::className(), $postData);
+        foreach ($data['items'] as $bean) {
+            /**
+             * @var PageExtraMeta $bean
+             */
+            $bean->pageID = $this->id;
+            $bean->save();
+        }
+    }
+
+    /**
+     * @param $save
+     * @param array $postData
+     */
+    public function setRoutes($postData, $save = false)
+    {
+        if (!$save) return;
+        PageRoute::deleteAll(['pageID' => $this->id]);
+        $data = $this->bundleMultipleBean(PageRoute::className(), $postData);
+        foreach ($data['items'] as $bean) {
+            /**
+             * @var PageRoute $bean
+             */
+            $bean->pageID = $this->id;
+            $bean->save();
+        }
+    }
+
+    /**
+     * @param bool $insert
+     * @param array $changedAttributes
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        if ($this->scenario == self::SCENARIO_DEFAULT) {
+            $postData = \Yii::$app->request->post();
+            if (array_key_exists('parentItems', $postData['Page'])) {
+                $this->setParentItems($postData['Page']['parentItems'], true);
+            }
+            if (array_key_exists('metaItems', $postData['Page'])) {
+                $this->setMetaItems($postData['Page']['metaItems'], true);
+            }
+            if (array_key_exists('routes', $postData['Page'])) {
+                $this->setRoutes($postData['Page']['routes'], true);
+            }
+        }
+        parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
      * @return array|\yii\db\ActiveRecord[]
      */
     public static function findAllLocalized()
@@ -261,30 +372,31 @@ class Page extends BeanWebsite
     /**
      * Method for getting the name of the bean
      * Is called for breadcrumb generation
+     * @param string $type
      * @return array
      */
-    public static function getLabels()
+    public static function getLabels($type = null)
     {
-        return [
-            'singular' => 'Page',
-            'multiple' => 'Pages'
-        ];
+        $labels = [];
+        switch ($type) {
+            case 'post':
+                $labels['singular'] = 'Post';
+                $labels['multiple'] = 'Posts';
+                break;
+            case 'category':
+                $labels['singular'] = 'Category';
+                $labels['multiple'] = 'Categories';
+                break;
+            case 'author':
+                $labels['singular'] = 'Author';
+                $labels['multiple'] = 'Authors';
+                break;
+            default:
+                $labels['singular'] = 'Page';
+                $labels['multiple'] = 'Pages';
+                break;
+        }
+        return $labels;
     }
 
-//    /**
-//     * @return \yii\db\ActiveQuery
-//     */
-//    public function getPage-extra-metas()
-//    {
-//        return $this->hasMany(Page-extra-meta::className(), ['pageID' => 'id']);
-//    }
-//
-//
-//    /**
-//     * @return \yii\db\ActiveQuery
-//     */
-//    public function getPage-routes()
-//    {
-//        return $this->hasMany(Page-route::className(), ['pageID' => 'id']);
-//    }
 }

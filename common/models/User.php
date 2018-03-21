@@ -68,7 +68,7 @@ class User extends Bean implements IdentityInterface, UserRbacInterface
      */
     public static function getUserLogoPath()
     {
-        return !empty(\Yii::$app->user->identity->logo) ? \Yii::$app->user->identity->logo : \Yii::$app->params['noImageSrc'];
+        return !empty(\Yii::$app->user->identity->logo) ? \Yii::$app->user->identity->logo : \Yii::$app->params['defaultLogo'];
     }
 
     /**

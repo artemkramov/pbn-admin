@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 19, 2018 at 12:27 PM
+-- Generation Time: Mar 21, 2018 at 11:55 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.5.38
 
@@ -54,17 +54,21 @@ CREATE TABLE `auth-item` (
   `data` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `created_at` int(11) DEFAULT NULL,
   `updated_at` int(11) DEFAULT NULL,
-  `parent_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL
+  `parentID` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `auth-item`
 --
 
-INSERT INTO `auth-item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`, `parent_id`) VALUES
+INSERT INTO `auth-item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`, `parentID`) VALUES
 ('admin', 1, 'Administrator', NULL, NULL, 1457028578, 1521371436, NULL),
 ('content', 2, 'Content management', NULL, NULL, 1469903227, 1469903227, ''),
-('content-manager', 1, 'Content manager', NULL, NULL, 1521302256, 1521302256, NULL),
+('content-manager', 1, 'Content manager', NULL, NULL, 1521302256, 1521628785, NULL),
+('content/menu-types/index', 2, 'Menu type index', NULL, NULL, 1521627790, 1521627790, 'content'),
+('content/menu-types/sort', 2, 'Menu type sort', NULL, NULL, 1521627819, 1521627819, 'content'),
+('content/menus', 2, 'Menu management', NULL, NULL, 1521627703, 1521627703, 'content'),
+('content/pages', 2, 'Blog management', NULL, NULL, 1521627054, 1521627054, 'content'),
 ('content/templates', 2, 'Template management', NULL, NULL, 1521371423, 1521371423, 'content'),
 ('i18n', 2, 'Translation management', NULL, NULL, 1464245784, 1464245784, NULL),
 ('permit/access', 2, 'Role and permission management', NULL, NULL, 1457031451, 1457031915, NULL),
@@ -95,7 +99,10 @@ INSERT INTO `auth-item-child` (`parent`, `child`) VALUES
 ('admin', 'settings'),
 ('admin', 'settings/websites'),
 ('admin', 'users'),
-('content-manager', 'content');
+('content-manager', 'content/menu-types/index'),
+('content-manager', 'content/menu-types/sort'),
+('content-manager', 'content/menus'),
+('content-manager', 'content/pages');
 
 -- --------------------------------------------------------
 
@@ -170,8 +177,8 @@ CREATE TABLE `menu` (
 --
 
 INSERT INTO `menu` (`id`, `dateCreated`, `dateModified`, `sort`, `parentID`, `pageID`, `image`, `url`, `menuTypeID`, `isEnabled`, `isDirect`, `isNewTab`, `isDeleted`, `websiteID`) VALUES
-(1, '0000-00-00 00:00:00', '2018-03-19 09:34:23', 0, NULL, 1, NULL, NULL, 3, 1, 0, 0, 0, 3),
-(2, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, NULL, 2, NULL, NULL, 3, 1, 0, 0, 0, 3),
+(1, '0000-00-00 00:00:00', '2018-03-19 14:35:24', 1, NULL, 1, NULL, NULL, 3, 1, 0, 0, 0, 3),
+(2, '0000-00-00 00:00:00', '2018-03-19 14:35:24', 0, NULL, 2, NULL, NULL, 3, 1, 0, 0, 0, 3),
 (3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2, NULL, 3, NULL, NULL, 1, 1, 0, 0, 0, 1),
 (4, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, 2, 4, NULL, NULL, 1, 1, 0, 0, 0, 1),
 (5, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 1, 4, 5, NULL, NULL, 1, 1, 0, 0, 0, 1),
@@ -679,7 +686,7 @@ CREATE TABLE `page` (
 --
 
 INSERT INTO `page` (`id`, `image1`, `image2`, `image3`, `datePublished`, `dateCreated`, `dateModified`, `sort`, `authorID`, `seoPriority`, `pageTypeID`, `ratingValue`, `ratingCount`, `isPaginationOn`, `paginationID`, `paginationPerPage`, `templateCarcassID`, `templateInnerID`, `isVisibleSitemapXml`, `isVisibleSitemapHtml`, `isMainPage`, `isEnabled`, `isDeleted`, `websiteID`) VALUES
-(1, NULL, NULL, NULL, '2018-03-15', '0000-00-00 00:00:00', '2018-03-14 22:00:00', 0, NULL, '1.0000', NULL, NULL, NULL, 1, 2, 1, 1, 2, 1, 1, 1, 1, 0, 3),
+(1, NULL, NULL, NULL, '2018-03-15', '0000-00-00 00:00:00', '2018-03-14 22:00:00', 0, NULL, '1.0000', 4, NULL, NULL, 1, 2, 1, 1, 2, 1, 1, 1, 1, 0, 3),
 (2, NULL, NULL, NULL, '2018-03-14', '0000-00-00 00:00:00', '2018-03-13 22:00:00', 0, NULL, '0.5000', 2, 4, 5, 1, 1, 1, 1, 3, 1, 1, 0, 1, 0, 1),
 (3, NULL, NULL, NULL, '2018-03-15', '0000-00-00 00:00:00', '2018-03-13 22:00:00', 1, NULL, '0.5000', 2, NULL, NULL, 0, NULL, NULL, 1, 3, 1, 1, 0, 1, 0, 1),
 (4, NULL, NULL, NULL, '2018-03-15', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 2, NULL, '0.5000', 2, NULL, NULL, 0, NULL, NULL, 1, 3, 1, 1, 0, 1, 0, 1),
@@ -1699,7 +1706,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `website`
 --
 ALTER TABLE `website`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- Constraints for dumped tables
 --

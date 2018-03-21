@@ -238,7 +238,7 @@ class AccessController extends CRUDController
             $permit = Yii::$app->authManager->createPermission($permission);
             $permit->description = Yii::$app->request->post('description', '');
             Yii::$app->authManager->add($permit);
-            $this->updatePermissionParent($permit->name, \Yii::$app->request->post('parent_id'));
+            $this->updatePermissionParent($permit->name, \Yii::$app->request->post('parentID'));
             \Yii::$app->session->setFlash('success', Module::t('Operation is done successfully.'));
             return $this->redirect(Url::toRoute([
                 'update-permission',
@@ -275,9 +275,9 @@ class AccessController extends CRUDController
      */
     private function updatePermissionParent($permissionName, $parent)
     {
-        $sql = "UPDATE " . self::TABLE_AUTH_ITEM . " SET parent_id=:parent_id WHERE name=:name";
+        $sql = "UPDATE " . self::TABLE_AUTH_ITEM . " SET parentID=:parentID WHERE name=:name";
         Yii::$app->db->createCommand($sql)
-            ->bindValue(':parent_id', $parent)
+            ->bindValue(':parentID', $parent)
             ->bindValue(':name', $permissionName)
             ->execute();
     }
@@ -335,7 +335,7 @@ class AccessController extends CRUDController
                 $permit->name = $permission;
                 $permit->description = Yii::$app->request->post('description', '');
                 Yii::$app->authManager->update($name, $permit);
-                $this->updatePermissionParent($name, \Yii::$app->request->post('parent_id'));
+                $this->updatePermissionParent($name, \Yii::$app->request->post('parentID'));
                 \Yii::$app->session->setFlash('success', Module::t('Operation is done successfully.'));
                 return $this->redirect(Url::toRoute([
                     'update-permission',

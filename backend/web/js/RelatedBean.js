@@ -25,6 +25,9 @@ var RelatedBean = (function () {
                 $(document).on('click', btnAddRelatedBean, function () {
                     var relatedBean = $(this).closest('.related-bean-row').find('.related-bean-value');
                     var urlOpener = $(this).data('href') + '&openerID=' + $(relatedBean).attr('id');
+                    if (window.websiteID) {
+                        urlOpener += "&websiteID=" + window.websiteID;
+                    }
 
                     $(this).closest('.related-bean-row').attr('data-row', $(relatedBean).attr('id'));
 

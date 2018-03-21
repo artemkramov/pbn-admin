@@ -91,4 +91,27 @@ class CRUDWebsiteController extends CRUDController
         return $this->redirect(Url::to(SiteHelper::formUrlForWebsite([AccessHelper::formPrimaryUrl('index')])));
     }
 
+    /**
+     * Lists all models in popup.
+     * @param string $openerID
+     * @param string $labelField
+     * @return mixed
+     */
+    public function actionPopup($openerID, $labelField)
+    {
+        /**
+         * @var IContentSearch $searchModel
+         */
+        $searchClass = $this->beanSearchClass;
+        $searchModel = new $searchClass();
+        $dataProvider = $searchModel->search(\Yii::$app->request->queryParams, \Yii::$app->request->websiteID);
+
+        return $this->render('popup', [
+            'searchModel'  => $searchModel,
+            'dataProvider' => $dataProvider,
+            'openerID'     => $openerID,
+            'labelField'   => $labelField,
+        ]);
+    }
+
 }

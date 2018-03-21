@@ -13,6 +13,10 @@ use backend\models\Characteristic;
 use backend\models\CharacteristicGroup;
 use backend\models\Currency;
 use backend\models\KitProduct;
+use backend\models\PageExtraMeta;
+use backend\models\PagePage;
+use backend\models\PageRoute;
+use backend\models\PageType;
 use backend\models\Product;
 use backend\models\ProductGallery;
 use backend\models\ProductVariation;
@@ -29,34 +33,6 @@ use yii\helpers\ArrayHelper;
  * */
 class MultipleBeanHelper
 {
-
-    /**
-     * Generate address form view
-     * @param null $model
-     * @param array $params
-     * @return string
-     */
-    public function bindAddress($model = null, $params = [])
-    {
-        if (!isset($model)) {
-            $model = new Address();
-        }
-        $countries = Country::getDropdownList();
-        $viewPath = "@backend/modules/products/views/address/view";
-        $attributes = (new Address())->getAttributes();
-        $attributesData = [];
-        foreach ($attributes as $attribute => $value) {
-            $attributesData[$attribute] = [
-                'id'   => self::formIdAttribute($attribute, $params['attribute'], $params['modelClass'], $params['counter']),
-                'name' => self::formName($attribute, $params['attribute'], $params['modelClass'], $params['counter'])
-            ];
-        }
-        return \Yii::$app->controller->renderPartial($viewPath, ArrayHelper::merge([
-            'model'          => $model,
-            'countries'      => $countries,
-            'attributesData' => $attributesData
-        ], $params));
-    }
 
     /**
      * Generate ID attribute for a field based on it's name and counter
@@ -88,18 +64,18 @@ class MultipleBeanHelper
     }
 
     /**
-     * Generate images for slider
+     * Generate parent items for page
      * @param null $model
      * @param array $params
      * @return string
      */
-    public function bindSlideritems($model = null, $params = [])
+    public function bindParentItems($model = null, $params = [])
     {
         if (!isset($model)) {
-            $model = new SliderItem();
+            $model = new PagePage();
         }
-        $viewPath = "@common/modules/content/views/slider-items/view";
-        $attributes = (new SliderItem())->getAttributes();
+        $viewPath = "@backend/modules/content/views/page-page/view";
+        $attributes = (new PagePage())->getAttributes();
         $attributesData = [];
         foreach ($attributes as $attribute => $value) {
             $attributesData[$attribute] = [
@@ -114,49 +90,18 @@ class MultipleBeanHelper
     }
 
     /**
-     * Generate product price variations
+     * Generate meta tag items for page
      * @param null $model
      * @param array $params
      * @return string
      */
-    public function bindVariations($model = null, $params = [])
+    public function bindMetaItems($model = null, $params = [])
     {
         if (!isset($model)) {
-            $model = new ProductVariation();
+            $model = new PageExtraMeta();
         }
-        $viewPath = "@backend/modules/products/views/variations/view";
-        $attributes = (new ProductVariation())->getAttributes();
-        $attributesData = [];
-        foreach ($attributes as $attribute => $value) {
-            $attributesData[$attribute] = [
-                'id'   => self::formIdAttribute($attribute, $params['attribute'], $params['modelClass'], $params['counter']),
-                'name' => self::formName($attribute, $params['attribute'], $params['modelClass'], $params['counter'])
-            ];
-        }
-        $sizeGroup = CharacteristicGroup::find()->where(['alias' => 'size'])->one();
-        $sizes = ArrayHelper::map((new Product())->getCustomAttributesByAlias('size'), 'id', 'title');
-        return \Yii::$app->controller->renderPartial($viewPath, ArrayHelper::merge([
-            'model'          => $model,
-            'attributesData' => $attributesData,
-            'sizes'          => $sizes,
-            'group'          => $sizeGroup,
-            'currencies'     => Currency::listAll()
-        ], $params));
-    }
-
-    /**
-     * Generate images for the product
-     * @param null $model
-     * @param array $params
-     * @return string
-     */
-    public function bindImages($model = null, $params = [])
-    {
-        if (!isset($model)) {
-            $model = new ProductGallery();
-        }
-        $viewPath = "@backend/modules/products/views/images/view";
-        $attributes = (new ProductGallery())->getAttributes();
+        $viewPath = "@backend/modules/content/views/page-extra-meta/view";
+        $attributes = (new PageExtraMeta())->getAttributes();
         $attributesData = [];
         foreach ($attributes as $attribute => $value) {
             $attributesData[$attribute] = [
@@ -171,18 +116,30 @@ class MultipleBeanHelper
     }
 
     /**
+     * Generate routes for page
      * @param null $model
      * @param array $params
      * @return string
      */
-    public function bindItems($model = null, $params = [])
+    public function bindRoutes($model = null, $params = [])
     {
         if (!isset($model)) {
-            $model = new KitProduct();
+            $model = new PageRoute();
         }
-        $viewPath = "@backend/modules/products/views/kit-products/view";
-        $attributes = (new KitProduct())->getAttributes();
+        $viewPath = "@backend/modules/content/views/page-route/view";
+        $attributes = (new PageRoute())->getAttributes();
         $attributesData = [];
+        $type = \Yii::$app->request->get('type', null);
+        $defaultSelectedRoute = null;
+        if (isset($type)) {
+            /**
+             * @var PageType $pageType
+             */
+            $pageType = PageType::getPageTypeByAlias($type);
+            if (isset($pageType)) {
+                $defaultSelectedRoute = $pageType->routeID;
+            }
+        }
         foreach ($attributes as $attribute => $value) {
             $attributesData[$attribute] = [
                 'id'   => self::formIdAttribute($attribute, $params['attribute'], $params['modelClass'], $params['counter']),
@@ -190,90 +147,10 @@ class MultipleBeanHelper
             ];
         }
         return \Yii::$app->controller->renderPartial($viewPath, ArrayHelper::merge([
-            'model'          => $model,
-            'attributesData' => $attributesData,
+            'model'                => $model,
+            'attributesData'       => $attributesData,
+            'defaultSelectedRoute' => $defaultSelectedRoute
         ], $params));
-    }
-
-    /**
-     * Generate order item form view
-     * @param null $model
-     * @param array $params
-     * @return string
-     */
-    public function bindOrderitems($model = null, $params = [])
-    {
-        if (!isset($model)) {
-            $model = new OrderItem();
-        }
-        $viewPath = "@backend/modules/products/views/order-item/view";
-        $attributes = (new OrderItem())->getAttributes();
-        $attributesData = [];
-        foreach ($attributes as $attribute => $value) {
-            $attributesData[$attribute] = [
-                'id'   => self::formIdAttribute($attribute, $params['attribute'], $params['modelClass'], $params['counter']),
-                'name' => self::formName($attribute, $params['attribute'], $params['modelClass'], $params['counter'])
-            ];
-        }
-        return \Yii::$app->controller->renderPartial($viewPath, ArrayHelper::merge([
-            'model'          => $model,
-            'attributesData' => $attributesData
-        ], $params));
-    }
-
-    /**
-     * Generate sale products form view
-     * @param null $model
-     * @param array $params
-     * @return string
-     */
-    public function bindSaleproducts($model = null, $params = [])
-    {
-        if (!isset($model)) {
-            $model = new SaleProduct();
-        }
-        $viewPath = "@backend/modules/products/views/sale-products/view";
-        $attributes = (new SaleProduct())->getAttributes();
-        $attributesData = [];
-        foreach ($attributes as $attribute => $value) {
-            $attributesData[$attribute] = [
-                'id'   => self::formIdAttribute($attribute, $params['attribute'], $params['modelClass'], $params['counter']),
-                'name' => self::formName($attribute, $params['attribute'], $params['modelClass'], $params['counter'])
-            ];
-        }
-        $html = \Yii::$app->controller->renderPartial($viewPath, ArrayHelper::merge([
-            'model'          => $model,
-            'attributesData' => $attributesData,
-            'product'        => null,
-        ], $params));
-        return preg_replace('~>\s+<~', '><', $html);
-    }
-
-    /**
-     * Generate sale products form view
-     * @param null $model
-     * @param array $params
-     * @return string
-     */
-    public function bindMagazineitems($model = null, $params = [])
-    {
-        if (!isset($model)) {
-            $model = new MagazineItem();
-        }
-        $viewPath = "@common/modules/content/views/magazine-items/view";
-        $attributes = (new MagazineItem())->getAttributes();
-        $attributesData = [];
-        foreach ($attributes as $attribute => $value) {
-            $attributesData[$attribute] = [
-                'id'   => self::formIdAttribute($attribute, $params['attribute'], $params['modelClass'], $params['counter']),
-                'name' => self::formName($attribute, $params['attribute'], $params['modelClass'], $params['counter'])
-            ];
-        }
-        $html = \Yii::$app->controller->renderPartial($viewPath, ArrayHelper::merge([
-            'model'          => $model,
-            'attributesData' => $attributesData,
-        ], $params));
-        return preg_replace('~>\s+<~', '><', $html);
     }
 
 

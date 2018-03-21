@@ -21,6 +21,10 @@ class RelatedBean extends Widget
 
     public $options = [];
 
+    public $extraGET = [];
+
+    public $extraGETView = [];
+
     /**
      * Registers the needed assets
      * @return void
@@ -46,6 +50,8 @@ class RelatedBean extends Widget
             'labelField'      => $this->labelField,
             'relatedBean'     => $this->relatedBean,
             'options'         => $this->options,
+            'extraGET'        => $this->extraGET,
+            'extraGETView'    => $this->extraGETView
         ]);
     }
 

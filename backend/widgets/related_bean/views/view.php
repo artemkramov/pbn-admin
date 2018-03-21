@@ -2,6 +2,7 @@
 
 use common\modules\i18n\Module;
 use yii\helpers\Html;
+use backend\components\SiteHelper;
 
 /**
  * @var string $label
@@ -12,6 +13,8 @@ use yii\helpers\Html;
  * @var \common\models\Bean $relatedBean
  * @var array $options
  * @var string $counter
+ * @var array $extraGET
+ * @var array $extraGETView
  */
 
 $uniqueRow = \backend\components\SiteHelper::generateUUID();
@@ -38,7 +41,7 @@ $uniqueRow = \backend\components\SiteHelper::generateUUID();
                     'class' => 'related-bean-image'
                 ]);
             }
-            echo Html::a($relatedBean->{$labelField}, \yii\helpers\Url::to([$controllerView, 'id' => $relatedBean->id]), $options);
+            echo Html::a($relatedBean->{$labelField}, \yii\helpers\Url::to(SiteHelper::formUrlForWebsite(\yii\helpers\ArrayHelper::merge([$controllerView, 'id' => $relatedBean->id], $extraGETView))), $options);
 
         } else {
             echo Html::a(Module::t('Nothing is selected'), '#', $options);
@@ -49,7 +52,7 @@ $uniqueRow = \backend\components\SiteHelper::generateUUID();
         ]) ?>
         <div class="related-bean-controls">
             <button type="button" class="btn btn-default btn-add-related-bean"
-                    data-href="<?= \yii\helpers\Url::to([$controllerPopup, 'labelField' => $labelField]) ?>">
+                    data-href="<?= \yii\helpers\Url::to(\yii\helpers\ArrayHelper::merge([$controllerPopup, 'labelField' => $labelField], $extraGET)) ?>">
                 <i class="glyphicon glyphicon-plus"></i>
             </button>
             <button type="button" class="btn btn-danger btn-remove-related-bean">

@@ -199,9 +199,9 @@ class CRUDController extends AuthController
     {
         $model = $this->findModel($id);
         $path = \Yii::$app->urlManager->parseRequest(\Yii::$app->request);
-        if (!User::isAdmin() && !\Yii::$app->user->can($path[0], ['bean' => $model, 'check' => true, 'extraAccessParams' => $this->extraAccessParams])) {
-            throw new ForbiddenHttpException();
-        }
+//        if (!User::isAdmin() && !\Yii::$app->user->can($path[0], ['bean' => $model, 'check' => true, 'extraAccessParams' => $this->extraAccessParams])) {
+//            throw new ForbiddenHttpException();
+//        }
         return $model;
     }
 

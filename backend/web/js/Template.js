@@ -113,14 +113,13 @@ var Template = (function () {
         initCommon: function () {
             tinymce.init({
                 selector: 'textarea[data-group=common]',
-                content_css: frontendDirectoryAsset + '/css/js_composer.css',
-                height: "480",
+                height: "150",
                 plugins: [
                     'advlist autolink lists link image charmap print preview anchor',
                     'searchreplace visualblocks code fullscreen',
-                    'insertdatetime media table contextmenu paste code responsivefilemanager'
+                    'insertdatetime media table contextmenu paste code'
                 ],
-                toolbar: 'responsivefilemanager insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+                toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
                 external_filemanager_path: "/admin/filemanager/",
             });
         },

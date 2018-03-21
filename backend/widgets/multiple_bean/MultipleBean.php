@@ -11,6 +11,7 @@ namespace backend\widgets\multiple_bean;
 
 use backend\components\MultipleBeanHelper;
 use yii\base\Widget;
+use yii\helpers\Inflector;
 
 /**
  * Widget for manipulating with multiple beans
@@ -75,7 +76,7 @@ class MultipleBean extends Widget
         }
         /* Helper is used to call the action which will render the view of the related bean */
         $helper = new MultipleBeanHelper();
-        $action = "bind" . ucfirst(strtolower($field));
+        $action = "bind" . Inflector::camelize($field);
         $dataItems = [];
         $modelClass = (new \ReflectionClass($this->model))->getShortName();
         $params = [
