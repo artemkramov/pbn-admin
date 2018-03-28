@@ -29,7 +29,7 @@ $icon = Html::tag('span', '', ['class' => 'fa fa-search']);
                     <?= Html::label('Choose website'); ?>
 
                     <?= Html::dropDownList('websiteID', $websiteID, $websites, [
-                        'class' => 'form-control form-dropdown-search'
+                        'class' => 'form-control form-dropdown-search chosen-select'
                     ]) ?>
                 </div>
 

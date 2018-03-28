@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 21, 2018 at 11:55 AM
+-- Generation Time: Mar 28, 2018 at 08:37 AM
 -- Server version: 10.1.16-MariaDB
 -- PHP Version: 5.5.38
 
@@ -38,7 +38,8 @@ CREATE TABLE `auth-assignment` (
 
 INSERT INTO `auth-assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('admin', '1', 1469962054),
-('content-manager', '51', 1521310042);
+('content-manager', '51', 1521310042),
+('content-manager', '52', 1522075283);
 
 -- --------------------------------------------------------
 
@@ -1439,7 +1440,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `username`, `authKey`, `passwordHash`, `passwordResetToken`, `email`, `status`, `dateCreated`, `dateUpdated`, `logo`) VALUES
 (1, 'admin', 'V-Cym0VAr8UvLBmmLSHJID6XlMaqaXyZ', '$2y$13$hg7vKc6Ath.Fk6X8NYVcwuoC2SqUCuCyJnCb2JjGgtoYiXYLoQWRS', 'z9dpcZFxYAMxYAP27d8sn3yPmFmD64zt_1501180297', 'artemkramov@yahoo.com', 10, 1455877362, 1501180297, '/img/logo.jpg'),
-(51, 'content-11', '', '$2y$13$aVdzylZ63FyDh25iE/0LZeeV3.qULDofWGX9JjSh5vK6PtMa23uzm', NULL, 'content@gmail.com', 10, 1521308303, 1521310021, NULL);
+(51, 'content-11', '', '$2y$13$aVdzylZ63FyDh25iE/0LZeeV3.qULDofWGX9JjSh5vK6PtMa23uzm', NULL, 'content@gmail.com', 10, 1521308303, 1521310021, NULL),
+(52, 'content-12', '', '$2y$13$zVMMgWpmQFKALI54FSmRLeqRFSr8uP30FJiY0YA3MPijGhb.c3MTa', NULL, 'content-12@gmail.com', 10, 1522075282, 1522075282, NULL);
 
 -- --------------------------------------------------------
 
@@ -1701,7 +1703,7 @@ ALTER TABLE `template`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 --
 -- AUTO_INCREMENT for table `website`
 --

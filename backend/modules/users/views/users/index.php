@@ -31,10 +31,7 @@ BreadcrumbHelper::set($this, \yii\helpers\ArrayHelper::merge($labels, [
         'filterModel'  => $searchModel,
         'columns'      => [
             ['class' => 'yii\grid\SerialColumn'],
-            [
-                'label'     => Module::t('Id'),
-                'attribute' => 'id',
-            ],
+
             [
                 'label'     => Module::t('Username'),
                 'attribute' => 'username',

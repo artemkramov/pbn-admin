@@ -7,6 +7,7 @@ use backend\models\Template;
 use backend\models\Pagination;
 use backend\models\PageType;
 use backend\components\SiteHelper;
+use backend\models\Page;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Page */
@@ -35,6 +36,7 @@ if ($model->isNewRecord) {
     $model->seoPriority = 0.5;
     $model->isVisibleSitemapXml = 1;
     $model->isVisibleSitemapHtml = 1;
+    $model->authorData = Page::getDefaultAuthor();
 }
 
 ?>
@@ -102,7 +104,7 @@ if ($model->isNewRecord) {
     </div>
 
     <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             <?= \common\widgets\MultiLanguageInput::widget([
                 'form'       => $form,
                 'model'      => $model,
@@ -115,7 +117,11 @@ if ($model->isNewRecord) {
                 'title'      => 'Preview'
             ]); ?>
         </div>
-        <div class="col-sm-6">
+
+     </div>
+
+    <div class="row">
+        <div class="col-sm-12">
             <?= \common\widgets\MultiLanguageInput::widget([
                 'form'       => $form,
                 'model'      => $model,
@@ -147,7 +153,7 @@ if ($model->isNewRecord) {
                 'controllerView'  => '/content/pages/view',
                 'inputName'       => 'Page[authorID]',
                 'labelField'      => 'title',
-                'relatedBean'     => $model->author,
+                'relatedBean'     => $model->isNewRecord ? $model->authorData : $model->author,
                 'extraGET'        => [
                     'type' => 'author'
                 ],
@@ -181,6 +187,23 @@ if ($model->isNewRecord) {
         <div class="col-sm-6">
             <?= $form->field($model, 'seoPriority')->textInput(['maxlength' => true]) ?>
         </div>
+
+        <div class="col-sm-6">
+            <?= $form->field($model, 'image1')->textInput(['maxlength' => true]) ?>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-sm-6">
+            <?= $form->field($model, 'image2')->textInput(['maxlength' => true]) ?>
+        </div>
+
+        <div class="col-sm-6">
+            <?= $form->field($model, 'image3')->textInput(['maxlength' => true]) ?>
+        </div>
+
     </div>
 
     <div class="row">

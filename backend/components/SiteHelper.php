@@ -46,7 +46,7 @@ class SiteHelper extends \yii\base\Component
             if (!self::checkActionPermission($url)) {
                 unset($actions[$key]);
             }
-            $actions[$key] = $action;
+//            $actions[$key] = $action;
         }
         $actions = array_map(function ($item) {
             return "{" . $item . "}";

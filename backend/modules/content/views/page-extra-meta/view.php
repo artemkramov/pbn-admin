@@ -34,7 +34,7 @@ use yii\helpers\Html;
                 <label><?= 'Content' ?></label>
                 <div class="form-group field-<?= $attributesData['content']['id'] ?>">
                     <?
-                    echo Html::textInput('Page[metaItems][content][' . $counter . ']', $model->name, ['class' => 'form-control field-content', 'id' => $attributesData['content']['id']]);
+                    echo Html::textInput('Page[metaItems][content][' . $counter . ']', $model->content, ['class' => 'form-control field-content', 'id' => $attributesData['content']['id']]);
                     ?>
                     <div class="help-block"></div>
                 </div>

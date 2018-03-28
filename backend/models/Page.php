@@ -56,6 +56,8 @@ class Page extends BeanWebsite
     const STATUS_ENABLED = 1;
     const STATUS_NOT_ENABLED = 0;
 
+    public $authorData = null;
+
     /**
      * @inheritdoc
      */
@@ -397,6 +399,25 @@ class Page extends BeanWebsite
                 break;
         }
         return $labels;
+    }
+
+    /**
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public static function getDefaultAuthor()
+    {
+        /**
+         * @var PageType $pageType
+         */
+        $pageType = PageType::getPageTypeByAlias('author');
+        return self::find()
+            ->where([
+                'pageTypeID' => $pageType->id,
+                'websiteID'  => Yii::$app->request->websiteID,
+                'isEnabled'  => self::STATUS_ENABLED,
+                'isDeleted'  => self::STATUS_NOT_DELETED
+            ])
+            ->one();
     }
 
 }

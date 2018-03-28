@@ -11,6 +11,14 @@ use common\models\Lang;
  */
 
 $currentLanguage = Lang::getCurrent();
+$websiteID = Yii::$app->request->websiteID;
+$website = null;
+if (isset($websiteID)) {
+    /**
+     * @var \backend\models\Website $website
+     */
+    $website = \backend\models\Website::findOne($websiteID);
+}
 
 ?>
 
@@ -22,6 +30,12 @@ $currentLanguage = Lang::getCurrent();
         <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
         </a>
+
+        <? if (isset($website)): ?>
+            <div class="header-website-name">
+                <?= $website->url ?>
+            </div>
+        <? endif; ?>
         <? //=\Yii::t('test-lang',"msg");?>
         <div class="navbar-custom-menu">
 
@@ -70,7 +84,7 @@ $currentLanguage = Lang::getCurrent();
     ?>
 </div>
 <div>
-    <? $javascriptLabels = \common\models\Lang::getJavascriptLabels();?>
+    <? $javascriptLabels = \common\models\Lang::getJavascriptLabels(); ?>
 </div>
 
 <script>
