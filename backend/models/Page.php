@@ -31,6 +31,7 @@ use yii\helpers\ArrayHelper;
  * @property integer $paginationPerPage
  * @property integer $templateCarcassID
  * @property integer $templateInnerID
+ * @property integer $isSeoPage
  * @property integer $isVisibleSitemapXml
  * @property integer $isVisibleSitemapHtml
  * @property integer $isMainPage
@@ -87,7 +88,7 @@ class Page extends BeanWebsite
         return [
             [['datePublished', 'dateCreated', 'dateModified'], 'safe'],
             [['templateCarcassID', 'templateInnerID'], 'required'],
-            [['sort', 'authorID', 'pageTypeID', 'ratingValue', 'ratingCount', 'isPaginationOn', 'paginationID', 'paginationPerPage', 'templateCarcassID', 'templateInnerID', 'isVisibleSitemapXml', 'isVisibleSitemapHtml', 'isMainPage', 'isEnabled', 'isDeleted', 'websiteID'], 'integer'],
+            [['sort', 'authorID', 'pageTypeID', 'ratingValue', 'ratingCount', 'isSeoPage', 'isPaginationOn', 'paginationID', 'paginationPerPage', 'templateCarcassID', 'templateInnerID', 'isVisibleSitemapXml', 'isVisibleSitemapHtml', 'isMainPage', 'isEnabled', 'isDeleted', 'websiteID'], 'integer'],
             [['seoPriority'], 'number'],
             [['image1', 'image2', 'image3'], 'string', 'max' => 255],
             [['authorID'], 'exist', 'skipOnError' => true, 'targetClass' => Page::className(), 'targetAttribute' => ['authorID' => 'id']],
@@ -159,6 +160,7 @@ class Page extends BeanWebsite
             'paginationPerPage'    => 'Pagination per page',
             'templateCarcassID'    => 'Template carcass',
             'templateInnerID'      => 'Template inner',
+            'isSeoPage'            => 'Is seo page',
             'isVisibleSitemapXml'  => 'Is visible sitemap XML',
             'isVisibleSitemapHtml' => 'Is visible sitemap HTML',
             'isMainPage'           => 'Is main page',
@@ -324,9 +326,11 @@ class Page extends BeanWebsite
     {
         if ($this->scenario == self::SCENARIO_DEFAULT) {
             $postData = \Yii::$app->request->post();
+            PagePage::deleteAll(['pageChildID' => $this->id]);
             if (array_key_exists('parentItems', $postData['Page'])) {
                 $this->setParentItems($postData['Page']['parentItems'], true);
             }
+            PageExtraMeta::deleteAll(['pageID' => $this->id]);
             if (array_key_exists('metaItems', $postData['Page'])) {
                 $this->setMetaItems($postData['Page']['metaItems'], true);
             }

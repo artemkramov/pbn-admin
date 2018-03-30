@@ -36,7 +36,9 @@ if ($model->isNewRecord) {
     $model->seoPriority = 0.5;
     $model->isVisibleSitemapXml = 1;
     $model->isVisibleSitemapHtml = 1;
-    $model->authorData = Page::getDefaultAuthor();
+    if (isset($type) && $type !== 'author') {
+        $model->authorData = Page::getDefaultAuthor();
+    }
 }
 
 ?>
@@ -227,6 +229,9 @@ if ($model->isNewRecord) {
     <div class="row">
         <div class="col-sm-6">
             <?= $form->field($model, 'isPaginationOn')->checkbox() ?>
+        </div>
+        <div class="col-sm-6">
+            <?= $form->field($model, 'isSeoPage')->checkbox() ?>
         </div>
     </div>
 

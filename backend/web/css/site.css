@@ -325,3 +325,8 @@ li.error {
     display: inline-block;
     padding: 15px;
 }
+
+.block-multiple-items {
+    padding: 15px;
+    border: 1px solid #999;
+}
