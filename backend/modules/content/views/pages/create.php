@@ -6,6 +6,9 @@ use backend\components\BreadcrumbHelper;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Page */
+/**
+ * @var array $extraParams
+ */
 
 $type = Yii::$app->request->get('type', null);
 BreadcrumbHelper::set($this, \yii\helpers\ArrayHelper::merge(\backend\models\Page::getLabels($type), [
@@ -17,7 +20,8 @@ BreadcrumbHelper::set($this, \yii\helpers\ArrayHelper::merge(\backend\models\Pag
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?= $this->render('_form', [
-        'model' => $model,
+        'model'       => $model,
+        'extraParams' => $extraParams
     ]) ?>
 
 </div>

@@ -294,13 +294,16 @@ class SiteHelper extends \yii\base\Component
     public function buildMenu()
     {
         $accessHelper = new AccessHelper();
+        $isContentManager = User::isContentManager();
         $menu_items = [
             ['label' => 'Menu', 'options' => ['class' => 'header']],
             ['label' => 'Blog', 'icon' => 'fa fa-pencil-square-o', 'url' => '#',
              'items' => [
                  ['label' => 'Posts', 'url' => ['/content/pages/index', 'type' => 'post'], 'icon' => 'fa fa-bars'],
-                 ['label' => 'Authors', 'url' => ['/content/pages/index', 'type' => 'author'], 'icon' => 'fa fa-address-book-o'],
-                 ['label' => 'Categories', 'url' => ['/content/pages/index', 'type' => 'category'], 'icon' => 'fa fa-circle']
+                 ['label'   => 'Authors', 'url' => ['/content/pages/index', 'type' => 'author'], 'icon' => 'fa fa-address-book-o',
+                  'visible' => !$isContentManager],
+                 ['label'   => 'Categories', 'url' => ['/content/pages/index', 'type' => 'category'], 'icon' => 'fa fa-circle',
+                  'visible' => !$isContentManager]
              ]
             ],
             ['label' => 'Content', 'icon' => 'fa fa-list', 'url' => '#',
@@ -311,7 +314,8 @@ class SiteHelper extends \yii\base\Component
                  ['label' => 'Page types', 'url' => ['/content/page-types/index'], 'icon' => 'fa fa-circle'],
                  ['label' => 'Menu types', 'url' => ['/content/menu-types/index'], 'icon' => 'fa fa-circle'],
                  ['label' => 'Menu', 'url' => ['/content/menus/index'], 'icon' => 'fa fa-circle'],
-                 ['label' => 'Pages', 'url' => ['/content/pages/index', 'type' => 'page'], 'icon' => 'fa fa-book']
+                 ['label'   => 'Pages', 'url' => ['/content/pages/index', 'type' => 'page'], 'icon' => 'fa fa-book',
+                  'visible' => !$isContentManager]
              ]
             ],
             ['label' => 'Users', 'icon' => 'fa fa-users', 'url' => '#',

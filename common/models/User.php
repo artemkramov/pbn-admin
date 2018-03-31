@@ -35,6 +35,8 @@ class User extends Bean implements IdentityInterface, UserRbacInterface
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
     const ROLE_ADMIN = "admin";
+    const ROLE_CONTENT = "content-manager";
+    const ROLE_SUPERVISOR = "supervisor";
 
     public $newPassword;
     public $newPasswordRepeat;
@@ -44,9 +46,33 @@ class User extends Bean implements IdentityInterface, UserRbacInterface
      */
     public static function isAdmin()
     {
+        return self::checkUserRole(self::ROLE_ADMIN);
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isContentManager()
+    {
+        return self::checkUserRole(self::ROLE_CONTENT);
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isSupervisor()
+    {
+        return self::checkUserRole(self::ROLE_SUPERVISOR);
+    }
+
+    /**
+     * @return bool
+     */
+    private static function checkUserRole($role)
+    {
         $currentUser = \Yii::$app->user;
         $roles = \Yii::$app->authManager->getRolesByUser($currentUser->id);
-        return array_key_exists(self::ROLE_ADMIN, $roles);
+        return array_key_exists($role, $roles);
     }
 
     /**

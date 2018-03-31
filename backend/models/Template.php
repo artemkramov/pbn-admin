@@ -20,6 +20,13 @@ use yii\helpers\ArrayHelper;
  */
 class Template extends BeanWebsite
 {
+
+    const CARCASS_GENERAL = 'general-carcass';
+    const TEMPLATE_POST = 'post';
+
+    const TYPE_CARCASS = 'carcass';
+    const TYPE_INNER = 'inner';
+
     /**
      * @inheritdoc
      */
@@ -101,6 +108,23 @@ class Template extends BeanWebsite
                 'websiteID' => Yii::$app->request->websiteID
             ])
             ->all(), 'id', 'name');
+    }
+
+    /**
+     * @param $alias
+     * @param $type
+     * @return array|null|\yii\db\ActiveRecord
+     */
+    public static function findByAliasAndType($alias, $type)
+    {
+        return self::find()
+            ->where([
+                'type'      => $type,
+                'isDeleted' => self::STATUS_NOT_DELETED,
+                'websiteID' => Yii::$app->request->websiteID,
+                'alias'     => $alias
+            ])
+            ->one();
     }
 
 }

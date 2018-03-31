@@ -29,6 +29,7 @@ use yii\helpers\ArrayHelper;
  * @property integer $isPaginationOn
  * @property integer $paginationID
  * @property integer $paginationPerPage
+ * @property integer $showAllPosts
  * @property integer $templateCarcassID
  * @property integer $templateInnerID
  * @property integer $isSeoPage
@@ -88,7 +89,7 @@ class Page extends BeanWebsite
         return [
             [['datePublished', 'dateCreated', 'dateModified'], 'safe'],
             [['templateCarcassID', 'templateInnerID'], 'required'],
-            [['sort', 'authorID', 'pageTypeID', 'ratingValue', 'ratingCount', 'isSeoPage', 'isPaginationOn', 'paginationID', 'paginationPerPage', 'templateCarcassID', 'templateInnerID', 'isVisibleSitemapXml', 'isVisibleSitemapHtml', 'isMainPage', 'isEnabled', 'isDeleted', 'websiteID'], 'integer'],
+            [['sort', 'authorID', 'pageTypeID', 'showAllPosts', 'ratingValue', 'ratingCount', 'isSeoPage', 'isPaginationOn', 'paginationID', 'paginationPerPage', 'templateCarcassID', 'templateInnerID', 'isVisibleSitemapXml', 'isVisibleSitemapHtml', 'isMainPage', 'isEnabled', 'isDeleted', 'websiteID'], 'integer'],
             [['seoPriority'], 'number'],
             [['image1', 'image2', 'image3'], 'string', 'max' => 255],
             [['authorID'], 'exist', 'skipOnError' => true, 'targetClass' => Page::className(), 'targetAttribute' => ['authorID' => 'id']],
@@ -146,7 +147,7 @@ class Page extends BeanWebsite
             'image1'               => 'Image1',
             'image2'               => 'Image2',
             'image3'               => 'Image3',
-            'datePublished'        => 'Date published',
+            'datePublished'        => 'Date',
             'dateCreated'          => 'Date created',
             'dateModified'         => 'Date modified',
             'sort'                 => 'Sort',
@@ -158,6 +159,7 @@ class Page extends BeanWebsite
             'isPaginationOn'       => 'Is pagination on',
             'paginationID'         => 'Pagination',
             'paginationPerPage'    => 'Pagination per page',
+            'showAllPosts'         => 'Show all posts',
             'templateCarcassID'    => 'Template carcass',
             'templateInnerID'      => 'Template inner',
             'isSeoPage'            => 'Is seo page',
@@ -166,7 +168,7 @@ class Page extends BeanWebsite
             'isMainPage'           => 'Is main page',
             'isEnabled'            => 'Is enabled',
             'isDeleted'            => 'Is deleted',
-            'websiteID'            => 'Website',
+            'websiteID'            => 'Website'
         ];
     }
 

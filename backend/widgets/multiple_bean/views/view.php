@@ -1,3 +1,16 @@
+<?
+
+/**
+ * @var string $title
+ * @var boolean $enableAddOption
+ * @var string $attribute
+ * @var string $templateReplaceKeyword
+ * @var array $dataItems
+ * @var string $template
+ */
+
+?>
+
 <div class="form-group block-multiple-items">
     <div>
         <label><?= $title ?></label>
